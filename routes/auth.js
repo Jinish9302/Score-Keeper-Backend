@@ -107,7 +107,7 @@ router.post('/login', async (req, res)=>{
 
 
 // if marked logged in varify and get user name from token
-router.get('/getUser', fetchUser, async (req, res)=>{
+router.post('/getUser', fetchUser, async (req, res)=>{
     let cred = await user.findOne({user_name:req.body.user_name})
     if(cred === null) {
         return
