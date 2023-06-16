@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken')
 const crpt = require('bcrypt')
 const user = require('../models/user')
 const {body, validationResult} = require('express-validator')
+const fetchUser = require('../middleware/fetchUser')
 // const emailValidator = require('deep-email-validator')
 
 // import router
@@ -12,19 +13,16 @@ const router = express.Router()
 
 // Define usable functions
 const convertToHash = async (PT) => {
-    let pass = await crpt.genSalt(saltRounds).then((salt)=>{
-        return crpt.hash(PT, salt)
-    })
+    let salt = await crpt.genSalt(10)
+    let pass = await crpt.hash(PT, salt)
     .catch((err)=>{
         console.log(err)
         return null
     })
-    console.log(pass)
     return pass
 }
 
 // Variables
-const saltRounds=10
 const secret_key = "score-keeper-4536"
 
 // check if authentication server is working or not
@@ -58,7 +56,7 @@ router.post('/create-user', [
             email:req.body.email,
             password:pass
         })
-        const secret_token = await jwt.sign(req.body, secret_key)
+        const secret_token = await jwt.sign(req.body.user_name, secret_key)
         // Save the data object if valid
         User.save()
         // Send message after saving data
@@ -85,10 +83,41 @@ router.post('/create-user', [
 })
 
 
-// login the user/with or without token
+// login the user
+router.post('/login', async (req, res)=>{
+    const user_data = await user.findOne({user_name:req.body.user_name})
+    if(user_data.length === 0) {
+        res.status(400).json({
+            message:"User name of password does not match"
+        })
+    } else {
+        let isValid = await crpt.compare(req.body.password, user_data.password)
+        if(isValid) {
+            res.status(200).json({
+                message:"UserFound",
+                token:jwt.sign(req.body.user_name, secret_key)
+            })
+        } else {
+            res.status(400).json({
+                message:"User name of password does not match"
+            })
+        }
+    }
+})
 
-router.post('/login', ()=>{
 
+// if marked logged in varify and get user name from token
+router.get('/getUser', fetchUser, async (req, res)=>{
+    let cred = await user.findOne({user_name:req.body.user_name})
+    if(cred === null) {
+        return
+    }else if(cred.length === 0) {
+        res.status(403).json({
+            message:"User might no longer exist"
+        })
+    } else {
+        res.status(200).json(cred)
+    }
 })
 
 module.exports = router
