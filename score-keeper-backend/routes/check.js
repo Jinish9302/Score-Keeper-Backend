@@ -1,6 +1,8 @@
 const express = require('express')
 const mongoose = require('mongoose')
+const path = require('path')
 const router = express.Router()
+const names = require('./contests')
 
 // if mongoose is connected propery it returns 200
 router.get('/check-connection', (req, res)=>{
@@ -19,5 +21,8 @@ router.get('/check-connection', (req, res)=>{
     }
 })
 
-
+// Below functions are just for testing purpose and not relevent
+router.get("/getImage", (req, res)=> {
+    res.sendFile(path.join(__dirname, '../public/favicon.ico'))
+})
 module.exports = router

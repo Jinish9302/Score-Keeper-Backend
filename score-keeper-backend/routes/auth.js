@@ -23,7 +23,7 @@ const convertToHash = async (PT) => {
 }
 
 // Variables
-const secret_key = "score-keeper-4536"
+const secret_key = process.env.SECRET_KEY
 
 // check if authentication server is working or not
 router.get('/',async (req, res)=>{
@@ -50,6 +50,7 @@ router.post('/create-user', [
     body('password').isLength({min: 8})
 ], async (req, res) => {
     try {
+        await console.log(process.env.SECRET_KEY)
         // Get Validation Result and gie 400 if invalid
         // if valid and non repeated values give 200 or give 400
         const errors = await validationResult(req)
