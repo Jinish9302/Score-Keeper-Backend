@@ -5,6 +5,7 @@ import Judge from './components/Judge.js'
 import Participant from './components/Participant.js'
 import Login from './components/Login.js'
 import UserInfo from './components/UserInfo.js'
+import SignUp from './components/SignUp.js'
 import { useState } from 'react'
 import { useEffect } from 'react'
 import {
@@ -15,6 +16,7 @@ import {
 function App() {
   const baseUrl = 'https://score-keeper-by-jinish.onrender.com/'
   const [userName, setUserName] = useState("User")
+  const [emailId, setEmailId] = useState("example@gmail.com")
   const [name, setName] = useState("Score-Keeper")
   const [participantCnt, setParticipantCount] = useState(null);
   const [token, setToken] = useState(null);
@@ -26,14 +28,14 @@ function App() {
       "score": 0
     }
   ])
-  const goToLogin = ()=>{
-    console.log(baseUrl)
-    console.log(window.location.href)
-    console.log(baseUrl+'Login')
-    if((authToken === null || authToken === 'null') && (window.location.href === baseUrl || window.location.href === 'http://localhost:3000/')) {
-      window.location.href = '/Login'
-    }
-  }
+  // const goToLogin = ()=>{
+  //   console.log(baseUrl)
+  //   console.log(window.location.href)
+  //   console.log(baseUrl+'Login')
+  //   if((authToken === null || authToken === 'null') && (window.location.href === baseUrl || window.location.href === 'http://localhost:3000/')) {
+  //     window.location.href = '/Login'
+  //   }
+  // }
   const getUserId = async ()=>{
     await setAuthToken(await localStorage.getItem('auth-token'))
     console.log(authToken)
@@ -52,11 +54,13 @@ function App() {
       })
       if(res.ok) {
         let json_ = await res.json();
-        console.log(json_.user_name)
+        console.log(json_)
         setUserName(json_.user_name)
+        setEmailId(json_.email)
       }
     } else {
       setUserName('User')
+      setEmailId('example@gmail.com')
     }
   }
   useEffect(()=>{
@@ -79,7 +83,7 @@ function App() {
         <Header contest_name={name} user_name={userName} token={authToken} />
         <Routes>
           <Route exact path='/' element={
-            (authToken === null || authToken === 'null')?(<Login set_user_name={setUserName} set_token={setToken}></Login>):
+            (authToken === null || authToken === 'null')?(<Login baseUrl={baseUrl} set_user_name={setUserName} set_token={setToken}></Login>):
             (<Workspace
               set_name={setName}
               name={name}
@@ -90,13 +94,16 @@ function App() {
             />)
           }></Route>
           <Route path='/Login' element={
-            <Login set_user_name={setUserName} set_token={setToken}></Login>
+            <Login baseUrl={baseUrl} set_user_name={setUserName} set_token={setToken}></Login>
           }>
           </Route>
           <Route path='/UserInfo' element={
-            <UserInfo></UserInfo>
+            <UserInfo name={userName} email={emailId}></UserInfo>
           }>
           </Route>
+          <Route path='/SignUp' element={
+            <SignUp setUserName={setUserName} baseUrl={baseUrl}></SignUp>
+          }></Route>
           <Route path='/Judge' element={
             <Judge
               part_scores={participantScores}

@@ -20,7 +20,7 @@ export default function Header(props) {
                     {(props.token!==null && props.token!=='null')?<Link to="/" className="text-white hover:text-gray-200">Home</Link>:""}
                     <Link to="/Judge" className="text-white hover:text-gray-200">Judge</Link>
                     <Link to="/Participant" className="text-white hover:text-gray-200">Leaderboard</Link>
-                    <Link to="/Login" className="text-white hover:text-gray-200">{props.user_name}</Link>
+                    {(props.token!==null && props.token!=='null')?<Link to="/UserInfo" className="text-white hover:text-gray-200">{props.user_name}</Link>:<Link to="/" className="text-white hover:text-gray-200">{props.user_name}</Link>}
                 </div>
             </div>
         </div>
