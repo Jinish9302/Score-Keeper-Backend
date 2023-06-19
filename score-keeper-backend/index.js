@@ -5,6 +5,8 @@ const connect_to_db = require('./db')
 const app = express()
 const port = 3050
 
+const cors=require("cors");
+
 // set environment variables
 require('dotenv').config()
 
@@ -30,6 +32,7 @@ mongoose.connection.once("Disconnected", function () {
 
 // Allow json files in 
 app.use(express.json())
+app.use(cors())
 app.use(express.static(path.join(__dirname, '../score/build')))
 // APIs for back-end
 

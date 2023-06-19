@@ -37,7 +37,7 @@ router.get('/',async (req, res)=>{
         }
     } catch {
         res.status(500).json({
-            message:"Unexpexte Error"
+            message:"Unexpected Error"
         })
     }
 })
@@ -57,9 +57,7 @@ router.post('/create-user', [
         const result = await emailValidator.validate(req.body.email)
         if(errors.isEmpty()) {
             // Generate Hash of password
-            if(!result.valid) {
-                return res.status(400).json({message:"Invalid Email / Email Id Doesn't exist"})
-            }
+            // return res.status(400).json({message:"Invalid Email / Email Id Doesn't exist"})
             let pass = await convertToHash(req.body.password)
             console.log(pass)
             // Create Data Object
@@ -95,7 +93,7 @@ router.post('/create-user', [
     
     } catch {
         res.status(500).json({
-            message:"Unexpexte Error"
+            message:"Unexpected Error"
         })
     }
 })
@@ -105,12 +103,15 @@ router.post('/create-user', [
 router.post('/login', async (req, res)=>{
     try {
         const user_data = await user.findOne({user_name:req.body.user_name})
-        if(user_data.length === 0) {
+        // const user_data = await user.findOne({user_name:'donkey'})
+        console.log(`fetched data: ${user_data}`)
+        if(user_data.length === null) {
             res.status(400).json({
                 message:"User name of password does not match"
             })
         } else {
             let isValid = await crpt.compare(req.body.password, user_data.password)
+            console.log(isValid)
             if(isValid) {
                 res.status(200).json({
                     message:"UserFound",
@@ -124,8 +125,9 @@ router.post('/login', async (req, res)=>{
         }
 
     } catch {
+        console.log("this is unexpected")
         res.status(500).json({
-            message:"Unexpexte Error"
+            message:"Unexpected Error"
         })
     }
 })
@@ -149,8 +151,9 @@ router.get('/getUser', fetchUser, async (req, res)=>{
             })
         }
     } catch {
+
         res.status(500).json({
-            message:"Unexpexte Error"
+            message:"Unexpected Error"
         })
     }
 })
@@ -169,7 +172,7 @@ router.get('/deleteUser', fetchUser, async (req, res)=> {
         }
     } catch {
         res.status(500).json({
-            message:"Unexpexte Error"
+            message:"Unexpected Error"
         })
     }
 })
