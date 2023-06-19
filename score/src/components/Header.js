@@ -17,9 +17,10 @@ export default function Header(props) {
             <div className="mx-auto py-4 px-6 flex items-center justify-between">
                 <div className="text-xl font-bold">{title}</div>
                 <div className="space-x-4">
-                    <Link to="/" className="text-white hover:text-gray-200">Home</Link>
+                    {(props.token!==null && props.token!=='null')?<Link to="/" className="text-white hover:text-gray-200">Home</Link>:""}
                     <Link to="/Judge" className="text-white hover:text-gray-200">Judge</Link>
-                    <Link to="/Participant" className="text-white hover:text-gray-200">Participant</Link>
+                    <Link to="/Participant" className="text-white hover:text-gray-200">Leaderboard</Link>
+                    <Link to="/Login" className="text-white hover:text-gray-200">{props.user_name}</Link>
                 </div>
             </div>
         </div>
