@@ -6,7 +6,6 @@ const crpt = require('bcrypt')
 const user = require('../models/user')
 const {body, validationResult} = require('express-validator')
 const fetchUser = require('../middleware/fetchUser')
-const emailValidator = require('deep-email-validator')
 
 // import router
 const router = express.Router()
@@ -45,16 +44,15 @@ router.get('/',async (req, res)=>{
 // create user send web-token to creater
 router.post('/create-user', [
     //Express Validators
-    body('user_name').isLength({min: 3}),
+    body('user_name').isLength({min: 1}),
     body('email').isEmail(),
     body('password').isLength({min: 8})
 ], async (req, res) => {
     try {
-        await console.log(process.env.SECRET_KEY)
-        // Get Validation Result and gie 400 if invalid
+        console.log(process.env.SECRET_KEY)
+        // Get Validation Result and give 400 if invalid
         // if valid and non repeated values give 200 or give 400
         const errors = await validationResult(req)
-        const result = await emailValidator.validate(req.body.email)
         if(errors.isEmpty()) {
             // Generate Hash of password
             // return res.status(400).json({message:"Invalid Email / Email Id Doesn't exist"})

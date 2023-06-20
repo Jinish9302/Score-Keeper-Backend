@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
-const conn_str = "mongodb+srv://jinishtrivedi9302:kinnari24@score-keeper-database.vonhpqm.mongodb.net/"
-
+require('dotenv').config()
+const conn_str = process.env.MONGO_CONNECTION_STRING
 const connect_to_db = async ()=>{
     await mongoose.connect(conn_str)
     .then(()=> {

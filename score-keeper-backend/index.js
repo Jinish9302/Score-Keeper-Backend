@@ -30,9 +30,13 @@ mongoose.connection.once("Disconnected", function () {
 });
 
 
-// Allow json files in 
+// Allow json files 
 app.use(express.json())
+
+
 app.use(cors())
+
+// server build file
 app.use(express.static(path.join(__dirname, '../score/build')))
 // APIs for back-end
 
