@@ -2,7 +2,6 @@ const express = require('express')
 const mongoose = require('mongoose')
 const path = require('path')
 const router = express.Router()
-const names = require('./contests')
 
 // if mongoose is connected propery it returns 200
 router.get('/check-connection', (req, res)=>{

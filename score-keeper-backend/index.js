@@ -25,15 +25,13 @@ runFunc()
 mongoose.connection.once("open", function () {
   console.log("MongoDB Connected");
 });
-mongoose.connection.once("Disconnected", function () {
+mongoose.connection.once("disconnected", function () {
   console.log("MongoDB Diconnected");
 });
 
 
 // Allow json files 
 app.use(express.json())
-
-
 app.use(cors())
 
 // server build file
@@ -45,6 +43,9 @@ app.use('/api/server', require('./routes/check'))
 
 // API for authentication
 app.use('/api/auth', require('./routes/auth'))
+
+// Contest Data Fetch
+app.use('/api/contest', require('./routes/contests'))
 
 // app.listen.port
 app.listen(port, () => {
