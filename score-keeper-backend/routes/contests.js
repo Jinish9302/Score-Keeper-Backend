@@ -1,6 +1,8 @@
 const express = require('express')
 const fetchUser = require('../middleware/fetchUser')
 const jwt = require('jsonwebtoken')
+// const fetchUser = require('../middleware/fetchUserFromToken')
+// const jwt = require('jsonwebtoken')
 const router = express.Router()
 require('dotenv').config()
 const secret_key = process.env.SECRET_KEY
@@ -54,6 +56,33 @@ router.get('/leaderboard/:ctoken/:ptoken', (req, res)=> {
     } catch(err) {
         console.log(err.message);
         res.status(400).send("INVALID TOKEN");
+    }
+})
+
+router.delete('/terminate-contest', fetchUser, (req, res)=> {
+    try {
+        if(req.body.user_name in contest_list) {
+            console.log(contest_list)
+            delete contest_list[req.body.user_name]
+            console.log(contest_list)
+            res.send(200).send("Contest Deleted")
+        } else {
+            res.send(400).send("Contest Does Not Exist")
+        }
+    } catch(err) {
+        console.log(err)
+        res.status(500).send("Unexpected Error")
+    }
+})
+
+router.put('/update/:jtoken/:index/:value', (req, res)=>{
+    try {
+        data = jwt.verify(req.params.jtoken, secret_key)
+        contest_list[data.user_name].scores[parseInt(req.params.index)] +=  (parseInt(req.params.value))
+        res.status(200).send("Updated")
+    } catch(err) {
+        console.log(err)
+        res.status(500).send("Unexpected Error")
     }
 })
 
