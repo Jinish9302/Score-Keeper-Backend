@@ -67,9 +67,9 @@ router.delete('/terminate-contest', fetchUser, (req, res)=> {
             console.log(contest_list)
             delete contest_list[req.body.user_name]
             console.log(contest_list)
-            res.send(200).send("Contest Deleted")
+            res.status(200).send("Contest Deleted")
         } else {
-            res.send(400).send("Contest Does Not Exist")
+            res.status(400).send("Contest Does Not Exist")
         }
     } catch(err) {
         console.log(err)
