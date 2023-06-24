@@ -8,7 +8,25 @@ require('dotenv').config()
 const secret_key = process.env.SECRET_KEY
 let contest_list = {}
 
+router.get('/getContest', fetchUser, (req, res)=>{
+    try {
+        let user_name = req.body.user_name;
+        console.log(user_name)
+        const jToken = jwt.sign({user_name, type:'JudgeKey'}, secret_key)
+        const pToken = jwt.sign({user_name, type:'ParticipantKey'}, secret_key)
+        const cToken = jwt.sign({user_name, type:'ContestKey'}, secret_key)
+        if(user_name in contest_list) {
+            res.json({isLive:true,jToken, pToken, cToken})
+        } else {
+            res.status(403).send("no contest found")
+        }
+    } catch(err) {
+        console.log(err.message)
+        res.send(err.message)
+    }
+})
 // Create Contests
+
 router.post('/createContest', fetchUser, (req, res)=> {
     console.log("After MiddleWare")
     try {
