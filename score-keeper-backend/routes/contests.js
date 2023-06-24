@@ -10,6 +10,7 @@ let contest_list = {}
 
 // Create Contests
 router.post('/createContest', fetchUser, (req, res)=> {
+    console.log("After MiddleWare")
     try {
         let user_name = req.body.user_name;
         console.log(user_name)
@@ -21,7 +22,8 @@ router.post('/createContest', fetchUser, (req, res)=> {
         console.log(contest_list[cToken])
         console.log(cToken in contest_list)
         if(user_name in contest_list) {
-            res.status(400).send("One Contest is already live. Terminate Current Contest to start a new one");
+            res.json({isLive:true,jToken, pToken, cToken})
+            // res.status(400).send("One Contest is already live. Terminate Current Contest to start a new one");
             return;
         }
         console.log(req.body)
@@ -37,7 +39,7 @@ router.post('/createContest', fetchUser, (req, res)=> {
             date:date
         };
         console.log(contest_list)
-        res.json({jToken, pToken, cToken})
+        res.json({isLive:false,jToken, pToken, cToken})
     } catch (err) {
         console.log(err.message)
         res.status(500).send("Unexpected Error")
