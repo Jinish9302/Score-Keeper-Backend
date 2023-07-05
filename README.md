@@ -12,6 +12,8 @@ Repo: [Link](https://github.com/Jinish9302/Score-Keeper-Full/tree/main)
 
 **Server:** Node, Express
 
+**Database:** MongoDB
+
 **Deployed On:** Render
 
 ## Environment Variables
