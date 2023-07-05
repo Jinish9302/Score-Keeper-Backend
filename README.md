@@ -29,23 +29,24 @@ get your MONGO_CONNECTION_STRING from mongodb atlas or Compass
 Download Github repository
 
 ```bash
-  git clone https://github.com/Jinish9302/Score-Keeper-Full.git
+git clone https://github.com/Jinish9302/Score-Keeper-Full.git
 ```
 
 Go to Project
 
 ```bash
-  cd Score-Keeper-Full
+cd Score-Keeper-Full
 ```
 
 Start Back End
 ```bash
-  cd score-keeper-backend
-  npm start
+cd score-keeper-backend
+npm start
 ```
 
 Start Front End  (Note: Change the baseurl variable value to "http://localhost:3000" and make sure to start back end before front end)
 ```bash
-  cd score
-  npm start
+cd..
+cd score
+npm start
 ```
